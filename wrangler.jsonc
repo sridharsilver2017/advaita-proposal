@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "advaita-proposal-system",
+  "main": "server/index.ts",
+  "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "advaita-db",
+      "database_id": "local-d1-advaita",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "STORAGE",
+      "bucket_name": "advaita-documents"
+    }
+  ],
+  "vars": {
+    "ENVIRONMENT": "development",
+    "APP_BASE_URL": "http://localhost:5173",
+    "JWT_SECRET": "advaita_designs_super_secret_signing_key_replace_in_prod",
+    "ENABLE_EMAIL_MOCK": "true"
+  }
+}
