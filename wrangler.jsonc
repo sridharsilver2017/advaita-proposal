@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "advaita-db",
-      "database_id": "af401bd5-b0c9-495b-85e6-4fc2e113cbe9",
+      "database_id": "7772a9a5-0aa2-4492-baa0-120f5cdb2987",
       "migrations_dir": "migrations"
     }
   ],
