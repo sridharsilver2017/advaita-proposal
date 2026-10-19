@@ -49,4 +49,14 @@ app.route('/api/documents', documentsApp);
 // 404 for undefined API endpoints
 app.all('/api/*', (c) => c.json({ success: false, error: 'API endpoint not found' }, 404));
 
+// SPA fallback for frontend client-side routes (e.g. /login, /dashboard, /portal/*)
+app.get('*', async (c) => {
+  if (c.env && (c.env as any).ASSETS) {
+    const url = new URL(c.req.url);
+    url.pathname = '/';
+    return (c.env as any).ASSETS.fetch(new Request(url.toString(), c.req.raw));
+  }
+  return c.text('Not found', 404);
+});
+
 export default app;
