@@ -4,8 +4,15 @@ import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
 
-const req = createRequire(import.meta.url);
-const { DatabaseSync } = req('node:sqlite');
+function getDatabaseSync() {
+  try {
+    const url = (typeof import.meta !== 'undefined' && import.meta.url) ? import.meta.url : 'file:///app/index.js';
+    const req = createRequire(url);
+    return req('node:sqlite').DatabaseSync;
+  } catch {
+    return null;
+  }
+}
 
 export interface D1PreparedStatement {
   bind(...values: any[]): D1PreparedStatement;
@@ -70,6 +77,10 @@ export class LocalD1Database implements D1Database {
       if (!existsSync(dir)) {
         mkdirSync(dir, { recursive: true });
       }
+    }
+    const DatabaseSync = getDatabaseSync();
+    if (!DatabaseSync) {
+      throw new Error('Local SQLite is only supported in Node.js environments. In Cloudflare Workers, bind a D1 database to env.DB.');
     }
     this.db = new DatabaseSync(dbPath);
     this.db.exec('PRAGMA journal_mode = WAL;');
